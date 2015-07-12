@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		99B0CF101B526B5A00C3786F /* PhysicalGestureGuesser.m in Sources */ = {isa = PBXBuildFile; fileRef = 99B0CF0F1B526B5A00C3786F /* PhysicalGestureGuesser.m */; };
 		E90A65FF1B51C6F7003B45C1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E90A65FE1B51C6F7003B45C1 /* main.m */; };
 		E90A66021B51C6F7003B45C1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E90A66011B51C6F7003B45C1 /* AppDelegate.m */; };
 		E90A660C1B51C6F8003B45C1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E90A660B1B51C6F8003B45C1 /* Images.xcassets */; };
@@ -27,6 +28,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		99B0CF0E1B526B5A00C3786F /* PhysicalGestureGuesser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhysicalGestureGuesser.h; sourceTree = "<group>"; };
+		99B0CF0F1B526B5A00C3786F /* PhysicalGestureGuesser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhysicalGestureGuesser.m; sourceTree = "<group>"; };
 		E90A65F91B51C6F7003B45C1 /* FistShake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FistShake.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E90A65FD1B51C6F7003B45C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E90A65FE1B51C6F7003B45C1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -88,6 +91,8 @@
 				E90A665C1B51C7D0003B45C1 /* AppController.m */,
 				E90A665E1B51E01E003B45C1 /* MainViewController.h */,
 				E90A665F1B51E01E003B45C1 /* MainViewController.m */,
+				99B0CF0E1B526B5A00C3786F /* PhysicalGestureGuesser.h */,
+				99B0CF0F1B526B5A00C3786F /* PhysicalGestureGuesser.m */,
 				E90A660B1B51C6F8003B45C1 /* Images.xcassets */,
 				E90A660D1B51C6F8003B45C1 /* LaunchScreen.xib */,
 				E90A65FC1B51C6F7003B45C1 /* Supporting Files */,
@@ -220,6 +225,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				99B0CF101B526B5A00C3786F /* PhysicalGestureGuesser.m in Sources */,
 				E90A66021B51C6F7003B45C1 /* AppDelegate.m in Sources */,
 				E90A665D1B51C7D0003B45C1 /* AppController.m in Sources */,
 				E90A65FF1B51C6F7003B45C1 /* main.m in Sources */,
@@ -412,6 +418,7 @@
 				E90A66201B51C6F8003B45C1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E90A66211B51C6F8003B45C1 /* Build configuration list for PBXNativeTarget "FistShakeTests" */ = {
 			isa = XCConfigurationList;
@@ -420,6 +427,7 @@
 				E90A66231B51C6F8003B45C1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
