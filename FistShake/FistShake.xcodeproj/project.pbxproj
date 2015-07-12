@@ -14,6 +14,7 @@
 		E90A661B1B51C6F8003B45C1 /* FistShakeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E90A661A1B51C6F8003B45C1 /* FistShakeTests.m */; };
 		E90A665D1B51C7D0003B45C1 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = E90A665C1B51C7D0003B45C1 /* AppController.m */; };
 		E90A66601B51E01E003B45C1 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E90A665F1B51E01E003B45C1 /* MainViewController.m */; };
+		E90A66BE1B52DECF003B45C1 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E90A66BD1B52DECF003B45C1 /* TestViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +42,8 @@
 		E90A665C1B51C7D0003B45C1 /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		E90A665E1B51E01E003B45C1 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		E90A665F1B51E01E003B45C1 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		E90A66BC1B52DECF003B45C1 /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
+		E90A66BD1B52DECF003B45C1 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +91,8 @@
 				E90A665C1B51C7D0003B45C1 /* AppController.m */,
 				E90A665E1B51E01E003B45C1 /* MainViewController.h */,
 				E90A665F1B51E01E003B45C1 /* MainViewController.m */,
+				E90A66BC1B52DECF003B45C1 /* TestViewController.h */,
+				E90A66BD1B52DECF003B45C1 /* TestViewController.m */,
 				E90A660B1B51C6F8003B45C1 /* Images.xcassets */,
 				E90A660D1B51C6F8003B45C1 /* LaunchScreen.xib */,
 				E90A65FC1B51C6F7003B45C1 /* Supporting Files */,
@@ -224,6 +229,7 @@
 				E90A665D1B51C7D0003B45C1 /* AppController.m in Sources */,
 				E90A65FF1B51C6F7003B45C1 /* main.m in Sources */,
 				E90A66601B51E01E003B45C1 /* MainViewController.m in Sources */,
+				E90A66BE1B52DECF003B45C1 /* TestViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -412,6 +418,7 @@
 				E90A66201B51C6F8003B45C1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E90A66211B51C6F8003B45C1 /* Build configuration list for PBXNativeTarget "FistShakeTests" */ = {
 			isa = XCConfigurationList;
@@ -420,6 +427,7 @@
 				E90A66231B51C6F8003B45C1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

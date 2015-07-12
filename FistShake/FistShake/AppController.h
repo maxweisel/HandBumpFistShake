@@ -8,6 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+@class TestViewController;
+
 @interface AppController : NSObject
+
++ (instancetype)currentInstance;
+
+@property (nonatomic, weak) TestViewController *viewController;
+
+- (void)sendValue:(id<NSCoding>)value forKey:(NSString *)key;
 
 @end

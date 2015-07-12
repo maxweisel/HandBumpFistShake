@@ -28,6 +28,7 @@
     [super viewDidLoad];
     
     CALayer *layer = self.view.layer;
+    layer.backgroundColor = [UIColor blackColor].CGColor;
     AVPlayerLayer *playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
     playerLayer.frame = layer.bounds;
     [layer addSublayer:playerLayer];
@@ -35,6 +36,10 @@
 
 - (void)itemDidFinishPlaying:(NSNotification *)notification {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return YES;
 }
 
 @end

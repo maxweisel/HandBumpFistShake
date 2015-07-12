@@ -12,4 +12,6 @@
 
 - (void)startGame;
 
+- (void)receivedInteraction:(NSNumber *)interaction fromDevice:(NSString *)device;
+
 @end

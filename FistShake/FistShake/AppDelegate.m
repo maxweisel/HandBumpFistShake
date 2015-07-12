@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "AppController.h"
 #import "MainViewController.h"
+#import "TestViewController.h"
 
 @interface AppDelegate ()
 
@@ -24,7 +25,7 @@
     _controller = [[AppController alloc] init];
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    self.window.rootViewController = [[MainViewController alloc] init];
+    self.window.rootViewController = [[TestViewController alloc] init];
     [self.window makeKeyAndVisible];
     
     return YES;

@@ -30,6 +30,10 @@
 	</array>
 	<key>UIStatusBarHidden</key>
 	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>04B_03__.ttf</string>
+	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
