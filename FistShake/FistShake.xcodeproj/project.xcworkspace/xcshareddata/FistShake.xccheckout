@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>85DA9605-EDE6-46BB-AC0A-A4510EBBED94</string>
+	<key>IDESourceControlProjectName</key>
+	<string>FistShake</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>3C909E209F22F0D67A3E0D97895A0B32FE1ABAEE</key>
+		<string>github.com:maxw/HandBumpFistShake.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>FistShake/FistShake.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>3C909E209F22F0D67A3E0D97895A0B32FE1ABAEE</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:maxw/HandBumpFistShake.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>3C909E209F22F0D67A3E0D97895A0B32FE1ABAEE</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>3C909E209F22F0D67A3E0D97895A0B32FE1ABAEE</string>
+			<key>IDESourceControlWCCName</key>
+			<string>HandBumpFistShake</string>
+		</dict>
+	</array>
+</dict>
+</plist>

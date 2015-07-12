@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "AppController.h"
+#import "StartScreenViewController.h"
 
 @interface AppDelegate ()
 
@@ -20,6 +21,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Create the first instance. Hold for the lifetime of the application.
     _controller = [[AppController alloc] init];
+    
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.window.rootViewController = [[StartScreenViewController alloc] init];
+    [self.window makeKeyAndVisible];
     
     return YES;
 }

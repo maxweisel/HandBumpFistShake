@@ -13,6 +13,11 @@
 		E90A66431B51C77E003B45C1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E90A66411B51C77E003B45C1 /* LaunchScreen.xib */; };
 		E90A664F1B51C77E003B45C1 /* HandBumpTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E90A664E1B51C77E003B45C1 /* HandBumpTests.m */; };
 		E90A665A1B51C7C7003B45C1 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = E90A66591B51C7C7003B45C1 /* AppController.m */; };
+		E90A66971B51FC3A003B45C1 /* StartScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E90A66961B51FC3A003B45C1 /* StartScreenViewController.m */; };
+		E90A66991B51FCD1003B45C1 /* TitleScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = E90A66981B51FCD1003B45C1 /* TitleScreen.png */; };
+		E90A669C1B51FFAA003B45C1 /* CutSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E90A669B1B51FFAA003B45C1 /* CutSceneViewController.m */; };
+		E90A669E1B52022C003B45C1 /* movie1.mov in Resources */ = {isa = PBXBuildFile; fileRef = E90A669D1B52022C003B45C1 /* movie1.mov */; };
+		E90A66A11B520282003B45C1 /* GamePlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E90A66A01B520282003B45C1 /* GamePlayViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +43,14 @@
 		E90A664E1B51C77E003B45C1 /* HandBumpTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HandBumpTests.m; sourceTree = "<group>"; };
 		E90A66581B51C7C7003B45C1 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		E90A66591B51C7C7003B45C1 /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
+		E90A66951B51FC3A003B45C1 /* StartScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartScreenViewController.h; sourceTree = "<group>"; };
+		E90A66961B51FC3A003B45C1 /* StartScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartScreenViewController.m; sourceTree = "<group>"; };
+		E90A66981B51FCD1003B45C1 /* TitleScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TitleScreen.png; sourceTree = "<group>"; };
+		E90A669A1B51FFAA003B45C1 /* CutSceneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CutSceneViewController.h; sourceTree = "<group>"; };
+		E90A669B1B51FFAA003B45C1 /* CutSceneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CutSceneViewController.m; sourceTree = "<group>"; };
+		E90A669D1B52022C003B45C1 /* movie1.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = movie1.mov; sourceTree = "<group>"; };
+		E90A669F1B520282003B45C1 /* GamePlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePlayViewController.h; sourceTree = "<group>"; };
+		E90A66A01B520282003B45C1 /* GamePlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GamePlayViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +96,12 @@
 				E90A66351B51C77E003B45C1 /* AppDelegate.m */,
 				E90A66581B51C7C7003B45C1 /* AppController.h */,
 				E90A66591B51C7C7003B45C1 /* AppController.m */,
+				E90A66951B51FC3A003B45C1 /* StartScreenViewController.h */,
+				E90A66961B51FC3A003B45C1 /* StartScreenViewController.m */,
+				E90A669A1B51FFAA003B45C1 /* CutSceneViewController.h */,
+				E90A669B1B51FFAA003B45C1 /* CutSceneViewController.m */,
+				E90A669F1B520282003B45C1 /* GamePlayViewController.h */,
+				E90A66A01B520282003B45C1 /* GamePlayViewController.m */,
 				E90A663F1B51C77E003B45C1 /* Images.xcassets */,
 				E90A66411B51C77E003B45C1 /* LaunchScreen.xib */,
 				E90A66301B51C77E003B45C1 /* Supporting Files */,
@@ -93,6 +112,8 @@
 		E90A66301B51C77E003B45C1 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E90A669D1B52022C003B45C1 /* movie1.mov */,
+				E90A66981B51FCD1003B45C1 /* TitleScreen.png */,
 				E90A66311B51C77E003B45C1 /* Info.plist */,
 				E90A66321B51C77E003B45C1 /* main.m */,
 			);
@@ -198,7 +219,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				E90A66431B51C77E003B45C1 /* LaunchScreen.xib in Resources */,
+				E90A66991B51FCD1003B45C1 /* TitleScreen.png in Resources */,
 				E90A66401B51C77E003B45C1 /* Images.xcassets in Resources */,
+				E90A669E1B52022C003B45C1 /* movie1.mov in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,7 +241,10 @@
 			files = (
 				E90A66361B51C77E003B45C1 /* AppDelegate.m in Sources */,
 				E90A665A1B51C7C7003B45C1 /* AppController.m in Sources */,
+				E90A66A11B520282003B45C1 /* GamePlayViewController.m in Sources */,
 				E90A66331B51C77E003B45C1 /* main.m in Sources */,
+				E90A669C1B51FFAA003B45C1 /* CutSceneViewController.m in Sources */,
+				E90A66971B51FC3A003B45C1 /* StartScreenViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,6 +441,7 @@
 				E90A66541B51C77E003B45C1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E90A66551B51C77E003B45C1 /* Build configuration list for PBXNativeTarget "HandBumpTests" */ = {
 			isa = XCConfigurationList;
@@ -423,6 +450,7 @@
 				E90A66571B51C77E003B45C1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
