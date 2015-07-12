@@ -8,6 +8,7 @@
 
 #import "AppController.h"
 #import <GameKit/GameKit.h>
+#import "TestViewController.h"
 
 // This is here to get clang to stfu about GKSession being deprecated.
 #pragma clang diagnostic push
@@ -21,25 +22,27 @@
     GKSession *_session;
 }
 
+__weak static AppController *__currentInstance = nil;
+
++ (instancetype)currentInstance {
+    return __currentInstance;
+}
+
 - (instancetype)init {
     if ((self = [super init]) != nil) {
+        if (__currentInstance == nil)
+            __currentInstance = self;
+        
         _session = [[GKSession alloc] initWithSessionID:@"HandBumpFistShake" displayName:nil sessionMode:GKSessionModeClient];
         _session.delegate = self;
         [_session setDataReceiveHandler:self withContext:nil];
         _session.available = YES;
-        
-        [self performSelector:@selector(test) withObject:nil afterDelay:6.0];
     }
     return self;
 }
 
 - (void)dealloc {
     
-}
-
-- (void)test {
-    NSLog(@"Send test");
-    [self sendValue:[NSNumber numberWithDouble:3.141592] forKey:@"Pie"];
 }
 
 #pragma mark -
@@ -74,7 +77,7 @@
 #pragma mark -
 #pragma mark Messages
 
-- (void)sendValue:(NSValue *)value forKey:(NSString *)key {
+- (void)sendValue:(id<NSCoding>)value forKey:(NSString *)key {
     if (value == nil || key == nil) {
         NSLog(@"Trying to send message with nil value or key.");
         return;
@@ -86,8 +89,10 @@
     [_session sendDataToAllPeers:messageData withDataMode:GKSendDataReliable error:nil];
 }
 
-- (void)receivedValue:(NSValue *)value forKey:(NSString *)key {
-    NSLog(@"Received value: %@ forKey: %@", value, key);
+- (void)receivedValue:(id)value forKey:(NSString *)key {
+    if ([@"interaction" isEqualToString:key]) {
+        [_viewController displayGesture:value];
+    }
 }
 
 @end

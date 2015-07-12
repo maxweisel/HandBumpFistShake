@@ -8,6 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
+@class GamePlayViewController;
+
 @interface AppController : NSObject
+
++ (instancetype)currentInstance;
+
+@property (nonatomic, readonly) NSArray *connectedPeers;
+
+- (void)sendInteraction:(NSString *)interaction;
+
+@property (nonatomic, weak) GamePlayViewController *gamePlayViewController;
 
 @end
