@@ -54,6 +54,8 @@ typedef enum {
     int _numberOfCorrectGestureFrames;
     
     VideoPlayer *_videoPlayer;
+    
+    SystemSoundID dingSoung;
 }
 
 - (instancetype)init {
@@ -64,6 +66,11 @@ typedef enum {
         [self updateGameUIForNewState];
         
         srand((unsigned int)time(NULL));
+        
+        NSString *successPath = [[NSBundle mainBundle] pathForResource:@"Success" ofType:@"aif"];
+        NSURL *successURL = [NSURL fileURLWithPath:successPath];
+        
+        AudioServicesCreateSystemSoundID((__bridge CFURLRef)(successURL), &dingSoung);
     }
     return self;
 }
@@ -156,6 +163,10 @@ typedef enum {
 
 - (void)sendNewGesture {
     Interaction interaction = rand() % 5 + 1;
+    if (interaction == _targetInteraction) {
+        [self sendNewGesture];
+        return;
+    }
     _targetInteraction = interaction;
     [self displayInteraction:interaction];
     
@@ -183,10 +194,13 @@ typedef enum {
     
     if (_numberOfCorrectGestureFrames > 10) {
         // Award point
-        if (_state == GSTeam1Playing)
+        if (_state == GSTeam1Playing) {
             _team1Points++;
-        else if (_state == GSTeam2Playing)
+            [self ding];
+        } else if (_state == GSTeam2Playing) {
             _team2Points++;
+            [self ding];
+        }
         [self updateScoreUI];
         
         [self sendNewGesture];
@@ -197,14 +211,21 @@ typedef enum {
     CGPoint point = [[touches anyObject] locationInView:self.view];
     if (point.x > 900.0f && point.y > 600.0f) {
         // Award point
-        if (_state == GSTeam1Playing)
+        if (_state == GSTeam1Playing) {
             _team1Points++;
-        else if (_state == GSTeam2Playing)
+            [self ding];
+        } else if (_state == GSTeam2Playing) {
             _team2Points++;
+            [self ding];
+        }
         [self updateScoreUI];
         
         [self sendNewGesture];
     }
+}
+
+- (void)ding {
+    AudioServicesPlaySystemSound(dingSoung);
 }
 
 - (void)endRound1 {
@@ -246,6 +267,8 @@ typedef enum {
         _state = GSTeam2Wins;
         [self updateGameUIForNewState];
     }
+    
+    [self showCutScene1];
 }
 
 - (void)showCutScene1 {

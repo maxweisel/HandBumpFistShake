@@ -33,6 +33,7 @@
 		E90A66BB1B52DCE0003B45C1 /* intro.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = E90A66BA1B52DCE0003B45C1 /* intro.mp4 */; };
 		E9F919791B52E987006D2C68 /* VideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E9F919781B52E987006D2C68 /* VideoPlayer.m */; };
 		E9F9197B1B52EA0B006D2C68 /* SAXGUY.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = E9F9197A1B52EA0B006D2C68 /* SAXGUY.mp4 */; };
+		E9F9197D1B52EE90006D2C68 /* Success.aif in Resources */ = {isa = PBXBuildFile; fileRef = E9F9197C1B52EE90006D2C68 /* Success.aif */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +83,7 @@
 		E9F919771B52E987006D2C68 /* VideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayer.h; sourceTree = "<group>"; };
 		E9F919781B52E987006D2C68 /* VideoPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayer.m; sourceTree = "<group>"; };
 		E9F9197A1B52EA0B006D2C68 /* SAXGUY.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = SAXGUY.mp4; sourceTree = "<group>"; };
+		E9F9197C1B52EE90006D2C68 /* Success.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = Success.aif; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +147,7 @@
 		E90A66301B51C77E003B45C1 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E9F9197C1B52EE90006D2C68 /* Success.aif */,
 				E9F9197A1B52EA0B006D2C68 /* SAXGUY.mp4 */,
 				E90A66BA1B52DCE0003B45C1 /* intro.mp4 */,
 				E90A66B61B52C854003B45C1 /* Cutscene1.mp4 */,
@@ -275,6 +278,7 @@
 				E90A66A31B523B82003B45C1 /* MainScreen@2x.png in Resources */,
 				E90A66B31B525069003B45C1 /* 04B_03__.ttf in Resources */,
 				E90A66991B51FCD1003B45C1 /* TitleScreen.png in Resources */,
+				E9F9197D1B52EE90006D2C68 /* Success.aif in Resources */,
 				E90A66B91B52C981003B45C1 /* Cutscene2.mp4 in Resources */,
 				E90A66A61B523D88003B45C1 /* Winner@2x.png in Resources */,
 				E90A66AF1B524406003B45C1 /* Handshake@2x.png in Resources */,
