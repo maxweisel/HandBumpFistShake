@@ -116,7 +116,7 @@
 
 - (void)startPressed:(UIButton *)startButton {
     _referenceAttitude = _motionManager.deviceMotion.attitude;
-    NSLog(@"reference: %@", _referenceAttitude);
+    NSLog(@"reference: %@", formattedAttitude(_referenceAttitude));
 
     if (![_referenceLabel superview]) {
         CGSize size = [self labelSize];
@@ -133,6 +133,83 @@
     _endLabel.alpha = .1;
 }
 
+// Stolen from http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/ and modified.
+CMRotationMatrix rotationMatrixForQuaternion(CMQuaternion q) {
+
+    double xx = q.x * q.x;
+    double xy = q.x * q.y;
+    double xz = q.x * q.z;
+    double xw = q.x * q.w;
+
+    double yy = q.y * q.y;
+    double yz = q.y * q.z;
+    double yw = q.y * q.w;
+
+    double zz = q.z * q.z;
+    double zw = q.z * q.w;
+
+    CMRotationMatrix rotationMatrix;
+
+    rotationMatrix.m11 = 1 - 2 * (yy + zz);
+    rotationMatrix.m21 =     2 * (xy - zw);
+    rotationMatrix.m31 =     2 * (xz + yw);
+
+    rotationMatrix.m12 =     2 * (xy + zw);
+    rotationMatrix.m22 = 1 - 2 * (xx + zz);
+    rotationMatrix.m32 =     2 * (yz - xw);
+
+    rotationMatrix.m13 =     2 * (xz - yw);
+    rotationMatrix.m23 =     2 * (yz + xw);
+    rotationMatrix.m33 = 1 - 2 * (xx + yy);
+
+    return rotationMatrix;
+}
+
+// But I wrote this one all by myself!
+CMRotationMatrix subtractRotationMatrices(CMRotationMatrix first, CMRotationMatrix second) {
+    CMRotationMatrix final;
+
+    final.m11 = first.m11 - second.m11;
+    final.m12 = first.m12 - second.m12;
+    final.m13 = first.m13 - second.m13;
+    
+    final.m21 = first.m21 - second.m21;
+    final.m22 = first.m22 - second.m22;
+    final.m23 = first.m23 - second.m23;
+
+    final.m31 = first.m31 - second.m31;
+    final.m32 = first.m32 - second.m32;
+    final.m33 = first.m33 - second.m33;
+
+    return final;
+}
+
+// Stolen from http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
+// Assumes the rotations are pure. This is probably true, right?
+CMQuaternion quaternionFromRotationMatrix(CMRotationMatrix m) {
+    CMQuaternion q;
+
+    q.w = sqrt(MAX(0, 1 + m.m11 + m.m22 + m.m33)) / 2.0;
+    q.x = sqrt(MAX(0, 1 + m.m11 - m.m22 - m.m33)) / 2.0;
+    q.y = sqrt(MAX(0, 1 - m.m11 + m.m22 - m.m33)) / 2.0;
+    q.z = sqrt(MAX(0, 1 - m.m11 - m.m22 + m.m33)) / 2.0;
+
+    if (m.m32 - m.m23 > 0) q.x *= -1;
+    if (m.m13 - m.m31 > 0) q.y *= -1;
+    if (m.m21 - m.m12 > 0) q.z *= -1;
+
+    return q;
+}
+
+CMQuaternion subtractQuaternions(CMQuaternion c1, CMQuaternion c2) {
+    CMQuaternion q;
+    q.x = c1.x - c2.x;
+    q.y = c1.y - c2.y;
+    q.z = c1.z - c2.z;
+    q.w = c1.w - c2.w;
+    return q;
+}
+
 - (void)endPressed:(UIButton *)endButton {
     CMAttitude *endAttitude = _motionManager.deviceMotion.attitude;
 
@@ -141,15 +218,27 @@
     [adjustedAttitude multiplyByInverseOfAttitude:_referenceAttitude];
 
     PhysicalGesture bestGuess = [_gestureGuesser bestGuessFromAttitude:adjustedAttitude];
-    NSLog(@"BEST GUESS: %@", )
+    NSLog(@"BEST GUESS: %@", @(bestGuess));
 
-
-
+#if DEBUG
     // Do some dumb stuff for debugging. This should be removed.
     NSLog(@"final attitude: %@", formattedAttitude(endAttitude));
     NSLog(@"adjusted attitude: %@", formattedAttitude(adjustedAttitude));
-    NSLog(@"rotation matrix:\n%@", stringifiedRotationMatrix(endAttitude.rotationMatrix));
-    NSLog(@"magnitude: %@", @(magnitudeFromAttitude(endAttitude)));
+    NSLog(@"rotation matrix:\n%@", stringifiedRotationMatrix(adjustedAttitude.rotationMatrix));
+    CMQuaternion q = adjustedAttitude.quaternion;
+    CMRotationMatrix calculatedRotationMatrix = rotationMatrixForQuaternion(q);
+    NSLog(@"calculated rotation matrix:\n%@", stringifiedRotationMatrix(calculatedRotationMatrix));
+    CMRotationMatrix differenceMatrix = subtractRotationMatrices(adjustedAttitude.rotationMatrix, calculatedRotationMatrix);
+    NSLog(@"difference matrix:\n%@", stringifiedRotationMatrix(differenceMatrix));
+    NSLog(@"quaternion: %@", formattedQuaternion(q));
+    CMQuaternion calculatedQuaternion = quaternionFromRotationMatrix(calculatedRotationMatrix);
+    NSLog(@"calculated quaternion: %@", formattedQuaternion(calculatedQuaternion));
+    CMQuaternion quatDiff = subtractQuaternions(q, calculatedQuaternion);
+    NSLog(@"quat diff: %@", formattedQuaternion(quatDiff));
+
+    NSLog(@"magnitude (atti): %@", @(magnitudeOfAttitude(adjustedAttitude)));
+    NSLog(@"magnitude (quat): %@", @(magnitudeOfQuaternion(q)));
+#endif
 
     _endButton.alpha = .1;
     _endButton.userInteractionEnabled = NO;
@@ -175,16 +264,30 @@
 
 #pragma mark Math
 
-double magnitudeFromAttitude(CMAttitude *attitude) {
+double magnitudeOfAttitude(CMAttitude *attitude) {
     return sqrt(pow(attitude.roll, 2.0f) + pow(attitude.yaw, 2.0f) + pow(attitude.pitch, 2.0f));
 }
 
+double magnitudeOfQuaternion(CMQuaternion q) {
+    return sqrt(pow(q.x, 2.0f) + pow(q.y, 2.0f) + pow(q.z, 2.0f) + pow(q.w, 2.0f));
+}
+
+CMQuaternion normalizeQuaternion(CMQuaternion q) {
+    double magnitude = magnitudeOfQuaternion(q);
+    q.x /= magnitude;
+    q.y /= magnitude;
+    q.z /= magnitude;
+    q.w /= magnitude;
+    return q;
+}
+
 NSString* stringifiedRotationMatrix(CMRotationMatrix matrix) {
-    NSString *row1 = [NSString stringWithFormat:@"\t %1.2f \t %1.2f \t %1.2f", matrix.m11, matrix.m12, matrix.m13];
-    NSString *row2 = [NSString stringWithFormat:@"\t %1.2f \t %1.2f \t %1.2f", matrix.m21, matrix.m22, matrix.m23];
-    NSString *row3 = [NSString stringWithFormat:@"\t %1.2f \t %1.2f \t %1.2f", matrix.m31, matrix.m32, matrix.m33];
+    NSString *row1 = [NSString stringWithFormat:@"\t %1.4f \t %1.4f \t %1.4f", matrix.m11, matrix.m12, matrix.m13];
+    NSString *row2 = [NSString stringWithFormat:@"\t %1.4f \t %1.4f \t %1.4f", matrix.m21, matrix.m22, matrix.m23];
+    NSString *row3 = [NSString stringWithFormat:@"\t %1.4f \t %1.4f \t %1.4f", matrix.m31, matrix.m32, matrix.m33];
     return [NSString stringWithFormat:@"[%@\n %@\n %@]", row1, row2, row3];
 }
+
 
 #pragma mark Formatting
 
@@ -208,6 +311,9 @@ NSString* formattedAttitude(CMAttitude *attitude) {
     return [NSString stringWithFormat:@"r:%@, p:%@, y:%@", formatted(attitude.roll), formatted(attitude.pitch), formatted(attitude.yaw)];
 }
 
+NSString* formattedQuaternion(CMQuaternion q) {
+    return [NSString stringWithFormat:@"x:%@, y:%@, z:%@, w:%@", formatted(q.x), formatted(q.y), formatted(q.z), formatted(q.w)];
+}
 
 NSString* formattedAttitudeInDegrees(CMAttitude *attitude) {
     return [NSString stringWithFormat:@"r:%@, p:%@, y:%@", formattedInDegrees(attitude.roll), formattedInDegrees(attitude.pitch), formattedInDegrees(attitude.yaw)];
@@ -220,6 +326,7 @@ UIFont* fixedFont() {
 - (CGSize)labelSize {
     return CGSizeMake(CGRectGetWidth(self.view.bounds) - 20, 30);
 }
+
 
 # pragma mark Bull
 

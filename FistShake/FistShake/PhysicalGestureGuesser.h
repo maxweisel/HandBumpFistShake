@@ -8,6 +8,31 @@
 
 #import <Foundation/Foundation.h>
 
+@class CMAttitude;
+
+typedef NS_ENUM(NSInteger, PhysicalGesture) {
+    Unknown,
+    FistBump,
+    Handshake,
+    HighFive,
+    Hug,
+    HugSlap,
+    // Keep future additions in kPhysicalGestureEnumStrings.
+    // Hack, hack, hack...
+};
+#define kPhysicalGestureEnumStrings @"Unknown", @"Handshake", @"FistBump", @"Hug", @"HugSlap", @"HighFive", nil
+
+
 @interface PhysicalGestureGuesser : NSObject
+
+- (instancetype)initWithThreshold:(double)threshold NS_DESIGNATED_INITIALIZER;
+
+// Make the best guess at which gesture the user performed.
+// If the attitude change between every physical gesture and |attitude| is
+// greater than |threshold|, return Unknown.
+- (PhysicalGesture)bestGuessFromAttitude:(CMAttitude *)attitude;
+
+// If all attitude magnitudes are greater than this threshold, assume there is no gesture.
+@property(nonatomic, assign) double threshold;
 
 @end
