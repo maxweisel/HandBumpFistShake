@@ -7,14 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "PhysicalGestureGuesser.h" // gross
 
-@class TestViewController;
+@protocol AppControllerDelegate <NSObject>
+- (void)useNewGesture:(Interaction)gesture;
+@end
 
 @interface AppController : NSObject
 
 + (instancetype)currentInstance;
 
-@property (nonatomic, weak) TestViewController *viewController;
+@property (nonatomic, weak) id<AppControllerDelegate> delegate;
 
 - (void)sendValue:(id<NSCoding>)value forKey:(NSString *)key;
 
