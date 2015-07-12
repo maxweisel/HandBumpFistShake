@@ -162,8 +162,8 @@ typedef enum {
     [self sendNewGesture];
     
     // Start timer
-    [self performSelector:@selector(blockButton) withObject:nil afterDelay:17.0f];
-    [self performSelector:@selector(endRound1) withObject:nil afterDelay:18.0f];
+    [self performSelector:@selector(blockButton) withObject:nil afterDelay:4.0f];
+    [self performSelector:@selector(endRound1) withObject:nil afterDelay:5.0f];
 }
 
 - (void)blockButton {
@@ -277,7 +277,7 @@ typedef enum {
     [self sendNewGesture];
     
     // Start timer
-    [self performSelector:@selector(endRound2) withObject:nil afterDelay:18.0f];
+    [self performSelector:@selector(endRound2) withObject:nil afterDelay:5.0f];
 }
 
 - (void)endRound2 {
