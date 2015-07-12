@@ -8,7 +8,7 @@
 
 #import "AppController.h"
 #import <GameKit/GameKit.h>
-#import "TestViewController.h"
+#import "PhysicalGestureGuesser.h"
 
 // This is here to get clang to stfu about GKSession being deprecated.
 #pragma clang diagnostic push
@@ -91,7 +91,8 @@ __weak static AppController *__currentInstance = nil;
 
 - (void)receivedValue:(id)value forKey:(NSString *)key {
     if ([@"interaction" isEqualToString:key]) {
-        [_viewController displayGesture:value];
+        Interaction interaction = [PhysicalGestureGuesser interactionForString:value];
+        [_delegate useNewGesture:interaction];
     }
 }
 

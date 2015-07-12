@@ -15,7 +15,6 @@
 		E90A661B1B51C6F8003B45C1 /* FistShakeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E90A661A1B51C6F8003B45C1 /* FistShakeTests.m */; };
 		E90A665D1B51C7D0003B45C1 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = E90A665C1B51C7D0003B45C1 /* AppController.m */; };
 		E90A66601B51E01E003B45C1 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E90A665F1B51E01E003B45C1 /* MainViewController.m */; };
-		E90A66BE1B52DECF003B45C1 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E90A66BD1B52DECF003B45C1 /* TestViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -235,7 +234,6 @@
 				E90A665D1B51C7D0003B45C1 /* AppController.m in Sources */,
 				E90A65FF1B51C6F7003B45C1 /* main.m in Sources */,
 				E90A66601B51E01E003B45C1 /* MainViewController.m in Sources */,
-				E90A66BE1B52DECF003B45C1 /* TestViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

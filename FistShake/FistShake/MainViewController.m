@@ -8,16 +8,27 @@
 
 #import "MainViewController.h"
 #import "PhysicalGestureGuesser.h"
+#import "AppController.h"
 
+#import <AudioToolbox/AudioToolbox.h>
 #import <CoreMotion/CoreMotion.h>
+
+@interface MainViewController () <AppControllerDelegate>
+@end
 
 @implementation MainViewController {
     CMMotionManager *_motionManager;
     PhysicalGestureGuesser *_gestureGuesser;
 
-    PhysicalGestureEnum _targetGesture;
-    PhysicalGestureEnum _currentGuess;
+    AppController *_controller;
+
+
+    Interaction _targetGesture;
+    Interaction _currentGuess;
     UILabel *_gestureGuessLabel;
+    UILabel *_targetGestureLabel;
+
+    NSTimer *_sendCurrentGestureTimer;
 
     UILabel *_gravityLabel;
     UILabel *_attitudeLabel;
@@ -27,11 +38,17 @@
     UILabel *_endLabel;
 }
 
+#pragma mark UIViewController Crap
+
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _gestureGuesser = [[PhysicalGestureGuesser alloc] initWithThreshold:.3];
-        _currentGuess = Unknown;
+        _targetGesture = None;
+        _currentGuess = None;
+
+        _controller = [AppController currentInstance];
+        _controller.delegate = self;
     }
     return self;
 }
@@ -58,8 +75,8 @@
 
     CGFloat guessLabelY = CGRectGetMaxY(_attitudeLabel.frame) + 10;
     _gestureGuessLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, guessLabelY, CGRectGetWidth(bounds), 100)];
-    _gestureGuessLabel.text = @"Unknown";
-    _gestureGuessLabel.font = [UIFont systemFontOfSize:48];
+    _gestureGuessLabel.text = [PhysicalGestureGuesser stringForInteraction:_currentGuess];
+    _gestureGuessLabel.font = [UIFont italicSystemFontOfSize:36];
     _gestureGuessLabel.textColor = [UIColor blackColor];
     _gestureGuessLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:_gestureGuessLabel];
@@ -67,6 +84,8 @@
     CALayer *layer =  _gestureGuessLabel.layer;
     layer.borderColor = [UIColor blueColor].CGColor;
     layer.borderWidth = 2;
+
+    [self setupTargetGestureLabel];
 
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.view bringSubviewToFront:_gestureGuessLabel];
@@ -93,8 +112,34 @@
                                                         [self updateWithMotion:motion];
                                                     }];
 
-
+    // Coordinate sending data.  Send every 100 ms.
+    _sendCurrentGestureTimer = [NSTimer scheduledTimerWithTimeInterval:.1 target:self selector:@selector(sendGestureData) userInfo:nil repeats:YES];
 }
+
+- (void)sendGestureData {
+//    NSLog(@"sending gesture: %@", [PhysicalGestureGuesser stringForInteraction:_currentGuess]);
+    [_controller sendValue:@(_currentGuess) forKey:@"CurrentGesture"];
+}
+
+#pragma mark Bleh
+
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
+
+- (void)dealloc {
+    [_motionManager stopDeviceMotionUpdates];
+    [_sendCurrentGestureTimer invalidate];
+}
+
+#pragma mark AppControllerDelegate
+
+- (void)useNewGesture:(Interaction)gesture {
+    _targetGesture = gesture;
+    [self updateTargetGestureUi];
+}
+
+#pragma mark Motion
 
 - (void)updateWithMotion:(CMDeviceMotion *)motion {
     if (!_referenceAttitude) {
@@ -110,12 +155,13 @@
 
 - (void)updateGuessLabel {
     CMAttitude *currentAttitude = _motionManager.deviceMotion.attitude;
-    PhysicalGestureEnum gestureEnum = [_gestureGuesser bestGuessFromAttitude:currentAttitude];
+    Interaction interaction = [_gestureGuesser bestGuessFromAttitude:currentAttitude];
 
-    if (gestureEnum != _currentGuess) {
-        NSString *gestureString = [PhysicalGestureGuesser stringForGestureEnum:gestureEnum];
+    if (interaction != _currentGuess) {
+        NSString *gestureString = [PhysicalGestureGuesser stringForInteraction:interaction];
         _gestureGuessLabel.text = gestureString;
-        NSLog(@"%@", gestureString);
+//        NSLog(@"%@", gestureString);
+        _currentGuess = interaction;
     }
 }
 
@@ -127,8 +173,30 @@
     [self.view addSubview:_referenceLabel];
 
     _referenceLabel.text = [NSString stringWithFormat:@"[%@]", formattedAttitude(_referenceAttitude)];
-
 }
+
+- (void)setupTargetGestureLabel {
+    _targetGestureLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_gestureGuessLabel.frame), CGRectGetWidth(self.view.bounds), 120)];
+    _targetGestureLabel.textAlignment = NSTextAlignmentCenter;
+    [self.view addSubview:_targetGestureLabel];
+    _targetGestureLabel.backgroundColor = [UIColor redColor];
+    _targetGestureLabel.font = [UIFont boldSystemFontOfSize:48];
+
+    NSString *targetString = [PhysicalGestureGuesser stringForInteraction:_targetGesture];
+    NSLog(@"first target: %@", targetString);
+    _targetGestureLabel.text = targetString;
+}
+
+- (void)updateTargetGestureUi {
+    // Update label.
+    NSString *text = [PhysicalGestureGuesser stringForInteraction:_targetGesture];
+    _targetGestureLabel.text = text;
+    NSLog(@"new target from server: %@", text);
+
+    // Shake phone.
+    AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+}
+
 
 #pragma mark Math
 
@@ -315,17 +383,6 @@ UIFont* fixedFont() {
 
 - (CGSize)labelSize {
     return CGSizeMake(CGRectGetWidth(self.view.bounds) - 20, 30);
-}
-
-
-# pragma mark Bull
-
-- (BOOL)prefersStatusBarHidden {
-    return YES;
-}
-
-- (void)dealloc {
-    [_motionManager stopDeviceMotionUpdates];
 }
 
 @end

@@ -12,7 +12,7 @@
 
 @interface PhysicalGesture : NSObject
 
-- (instancetype)initWithEnum:(PhysicalGestureEnum)gestureEnum
+- (instancetype)initWithType:(Interaction)Interaction
                     minPitch:(double)minPitch
                     maxPitch:(double)maxPitch
                      minRoll:(double)minRoll
@@ -21,7 +21,7 @@
 // How confident are we that the attitude describes this gesture?
 - (double)distance:(CMAttitude *)attitude;
 
-@property(nonatomic, readonly) PhysicalGestureEnum gestureEnum;
+@property(nonatomic, readonly) Interaction Interaction;
 @property(nonatomic) double minPitch;
 @property(nonatomic) double maxPitch;
 @property(nonatomic) double minRoll;
@@ -31,14 +31,14 @@
 
 @implementation PhysicalGesture
 
-- (instancetype)initWithEnum:(PhysicalGestureEnum)gestureEnum
+- (instancetype)initWithType:(Interaction)Interaction
                     minPitch:(double)minPitch
                     maxPitch:(double)maxPitch
                      minRoll:(double)minRoll
                      maxRoll:(double)maxRoll {
     self = [super init];
     if (self) {
-        _gestureEnum = gestureEnum;
+        _Interaction = Interaction;
         _minPitch = minPitch;
         _maxPitch = maxPitch;
         _minRoll = minRoll;
@@ -89,13 +89,14 @@
     self = [super init];
     if (self) {
 
-        _handshake = [[PhysicalGesture alloc] initWithEnum:Handshake minPitch:0.87 maxPitch:1.30 minRoll:-1.98 maxRoll:-1.36];
-        _fistBump = [[PhysicalGesture alloc] initWithEnum:FistBump minPitch:-0.20 maxPitch:-0.03 minRoll:3.14 maxRoll:3.14];  // shitty
-        _highFive = [[PhysicalGesture alloc] initWithEnum:HighFive minPitch:-0.11 maxPitch:0.01 minRoll:1.72 maxRoll:2.11];
-        _hug = [[PhysicalGesture alloc] initWithEnum:Hug minPitch:0.29 maxPitch:1.07 minRoll:-2.48 maxRoll:-2.15];
+        _handshake = [[PhysicalGesture alloc] initWithType:Handshake minPitch:0.87 maxPitch:1.30 minRoll:-1.98 maxRoll:-1.36];
+        _fistBump = [[PhysicalGesture alloc] initWithType:FistBump minPitch:-0.20 maxPitch:-0.03 minRoll:3.14 maxRoll:3.14];  // shitty
+        _highFive = [[PhysicalGesture alloc] initWithType:HighFive minPitch:-0.11 maxPitch:0.01 minRoll:1.72 maxRoll:2.11];
+        _hug = [[PhysicalGesture alloc] initWithType:Hug minPitch:0.29 maxPitch:1.07 minRoll:-2.48 maxRoll:-2.15];
 
         _gestures = @[_handshake, _fistBump, _highFive, _hug];
 
+        // Currently ignored.
         _threshold = threshold;
     }
     return self;
@@ -105,16 +106,16 @@
     return [self initWithThreshold:.2];
 }
 
-- (PhysicalGestureEnum)bestGuessFromAttitude:(CMAttitude *)attitude {
+- (Interaction)bestGuessFromAttitude:(CMAttitude *)attitude {
 
-    PhysicalGestureEnum whichGesture = Unknown;
+    Interaction whichGesture = None;
     double minDistance = 1000000000;
 
     for (PhysicalGesture *physicalGesture in _gestures) {
         double distance = [physicalGesture distance:attitude];
         if (distance < minDistance) {
             minDistance = distance;
-            whichGesture = physicalGesture.gestureEnum;
+            whichGesture = physicalGesture.Interaction;
         }
     }
 
@@ -127,18 +128,47 @@
 
 }
 
-+ (NSString *)stringForGestureEnum:(PhysicalGestureEnum)gestureEnum {
-    switch (gestureEnum) {
-        case FistBump: return @"Fist Bump";
-        case Handshake: return @"Handshake";
-        case HighFive: return @"High Five";
-        case Hug: return @"Hug";
-        case HugSlap: return @"HugSlap";
-
-        case Unknown:
++ (NSString *)stringForInteraction:(Interaction)interaction {
+    switch (interaction) {
+        case None:
+            return @"None";
+        case Handshake:
+            return @"Handshake";
+        case FistBump:
+            return @"Fist Bump";
+        case HighFive:
+            return @"High Five";
+        case BroHug:
+            return @"Bro Hug";
+        case Hug:
+            return @"Hug";
         default:
-            return @"Unknown";
+            break;
     }
+    return @"<Interaction Not Found>";
+}
+
++ (Interaction)interactionForString:(NSString *)str {
+    if ([str isEqualToString:@"None"]) {
+        return None;
+    }
+    if ([str isEqualToString:@"Handshake"]) {
+        return Handshake;
+    }
+    if ([str isEqualToString:@"Fist Bump"]) {
+        return FistBump;
+    }
+    if ([str isEqualToString:@"HighFive"]) {
+        return HighFive;
+    }
+    if ([str isEqualToString:@"BroHug"]) {
+        return BroHug;
+    }
+    if ([str isEqualToString:@"Hug"]) {
+        return Hug;
+    }
+
+    return None;
 }
 
 @end
