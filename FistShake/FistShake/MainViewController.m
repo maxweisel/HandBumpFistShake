@@ -10,6 +10,7 @@
 #import "PhysicalGestureGuesser.h"
 #import "AppController.h"
 
+#import <AudioToolbox/AudioToolbox.h>
 #import <CoreMotion/CoreMotion.h>
 
 @interface MainViewController () <AppControllerDelegate>
@@ -113,9 +114,6 @@
 
     // Coordinate sending data.  Send every 100 ms.
     _sendCurrentGestureTimer = [NSTimer scheduledTimerWithTimeInterval:.1 target:self selector:@selector(sendGestureData) userInfo:nil repeats:YES];
-
-//    _sendCurrentGestureTimer = [[NSTimer alloc] initWithFireDate:firstFire interval:.1 /* 10ms */ target:self selector:@selector(sendGestureData) userInfo:nil repeats:YES];
-
 }
 
 - (void)sendGestureData {
@@ -138,7 +136,7 @@
 
 - (void)useNewGesture:(Interaction)gesture {
     _targetGesture = gesture;
-    [self updateTargetGestureLabel];
+    [self updateTargetGestureUi];
 }
 
 #pragma mark Motion
@@ -162,7 +160,7 @@
     if (interaction != _currentGuess) {
         NSString *gestureString = [PhysicalGestureGuesser stringForInteraction:interaction];
         _gestureGuessLabel.text = gestureString;
-        NSLog(@"%@", gestureString);
+//        NSLog(@"%@", gestureString);
         _currentGuess = interaction;
     }
 }
@@ -189,10 +187,14 @@
     _targetGestureLabel.text = targetString;
 }
 
-- (void)updateTargetGestureLabel {
+- (void)updateTargetGestureUi {
+    // Update label.
     NSString *text = [PhysicalGestureGuesser stringForInteraction:_targetGesture];
     _targetGestureLabel.text = text;
     NSLog(@"new target from server: %@", text);
+
+    // Shake phone.
+    AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
 }
 
 

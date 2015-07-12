@@ -28,6 +28,8 @@
     self.window.rootViewController = [[MainViewController alloc] init];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     
     return YES;
 }
