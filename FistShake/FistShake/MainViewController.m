@@ -14,13 +14,10 @@
 @implementation MainViewController {
     CMMotionManager *_motionManager;
     PhysicalGestureGuesser *_gestureGuesser;
+
+    PhysicalGestureEnum _targetGesture;
     PhysicalGestureEnum _currentGuess;
     UILabel *_gestureGuessLabel;
-
-//    UIButton *_startButton;
-//    UIButton *_endButton;
-
-    UIButton *_bigButton;
 
     UILabel *_gravityLabel;
     UILabel *_attitudeLabel;
@@ -43,37 +40,6 @@
     [super viewDidLoad];
 
     CGRect bounds = self.view.bounds;
-
-
-#if 0
-    _startButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    _startButton.frame = CGRectMake(0, 0, 200, 60); // It's a lie!
-    [_startButton setTitle:@"[Start]" forState:UIControlStateNormal];
-    [_startButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    _startButton.titleLabel.font = fixedFont();
-    _startButton.layer.borderColor = [UIColor redColor].CGColor;
-    _startButton.layer.borderWidth = 1;
-    _startButton.layer.cornerRadius = 3;
-    [self.view addSubview:_startButton];
-    _startButton.center = CGPointMake(CGRectGetMidX(bounds),
-                                 CGRectGetMidY(bounds));
-    [_startButton addTarget:self action:@selector(startPressed:) forControlEvents:UIControlEventTouchUpInside];
-
-    _endButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    CGRect endFrame = _startButton.frame;
-    endFrame.origin.y = CGRectGetMaxY(_startButton.frame) + 15;
-    _endButton.frame = endFrame;
-    [_endButton setTitle:@"{End}" forState:UIControlStateNormal];
-    [_endButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    _endButton.layer.borderColor = [UIColor redColor].CGColor;
-    _endButton.layer.borderWidth = 1;
-    _endButton.layer.cornerRadius = 3;
-    _endButton.titleLabel.font = fixedFont();
-    [self.view addSubview:_endButton];
-    [_endButton addTarget:self action:@selector(endPressed:) forControlEvents:UIControlEventTouchUpInside];
-    _endButton.alpha = .1;
-    _endButton.userInteractionEnabled = NO;
-#endif
 
     // Diagnostics.
     CGPoint gravityLabelOrigin = CGPointMake(10, 20);
@@ -106,18 +72,6 @@
         [self.view bringSubviewToFront:_gestureGuessLabel];
     });
 
-#if 0
-    _bigButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(bounds), 250)];  // fake origin
-    _bigButton.backgroundColor = [UIColor redColor];
-    [_bigButton setTitle:@"BRO" forState:UIControlStateNormal];
-    _bigButton.titleLabel.font = [UIFont systemFontOfSize:24];
-    _bigButton.center = [self.view convertPoint:self.view.center fromView:self.view];
-    [self.view addSubview:_bigButton];
-    [_bigButton addTarget:self action:@selector(bigButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-#endif
-
-
-
     // Finally! Motion!
     _motionManager = [[CMMotionManager alloc] init];
     _motionManager.deviceMotionUpdateInterval = 1.0f/60.0f;
@@ -126,9 +80,6 @@
                                                     withHandler:^(CMDeviceMotion *motion, NSError *error) {
                                                         if (error) {
                                                             NSString *errorString = [NSString stringWithFormat:@"wtf: %@", error];
-
-//                                                            [_startButton removeFromSuperview];
-
                                                             UILabel *label = [[UILabel alloc] init];
                                                             [self.view addSubview:label];
                                                             label.text = errorString;
@@ -168,19 +119,6 @@
     }
 }
 
-
-#pragma mark Buttons
-
-- (void)bigButtonPressed:(UIButton *)button {
-
-
-
-
-//    NSLog(@"%@", currentAttitude);
-//    NSLog(@"attitude (radians): %@", formattedAttitude(currentAttitude));
-//    NSLog(@"\n");
-}
-
 - (void)setupReferenceLabel {
     CGSize size = [self labelSize];
     CGPoint origin = (CGPoint){10, CGRectGetMaxY(self.view.bounds) - size.height - 20};
@@ -191,92 +129,6 @@
     _referenceLabel.text = [NSString stringWithFormat:@"[%@]", formattedAttitude(_referenceAttitude)];
 
 }
-
-#if 0
-- (void)startPressed:(UIButton *)startButton {
-    _referenceAttitude = _motionManager.deviceMotion.attitude;
-    NSLog(@"reference: %@", formattedAttitude(_referenceAttitude));
-
-    if (![_referenceLabel superview]) {
-        [self setupReferenceLabel];
-    }
-
-    _endButton.alpha = 1;
-    _endButton.userInteractionEnabled = YES;
-
-    _endLabel.alpha = .1;
-}
-
-- (void)endPressed:(UIButton *)endButton {
-    CMAttitude *endAttitude = _motionManager.deviceMotion.attitude;
-
-    // Use _referenceAttitude as basis for the attitude adjustment.
-    CMAttitude *adjustedAttitude = [endAttitude copy];
-    [adjustedAttitude multiplyByInverseOfAttitude:_referenceAttitude];
-
-    PhysicalGesture bestGuess = [_gestureGuesser bestGuessFromAttitude:adjustedAttitude];
-    NSLog(@"BEST GUESS: %@", @(bestGuess));
-
-#if DEBUG
-    // Do some dumb stuff for debugging. This should be removed.
-    NSLog(@"final attitude: %@", formattedAttitude(endAttitude));
-    NSLog(@"adjusted attitude: %@", formattedAttitude(adjustedAttitude));
-    NSLog(@"rotation matrix:\n%@", stringifiedRotationMatrix(adjustedAttitude.rotationMatrix));
-    CMQuaternion q = adjustedAttitude.quaternion;
-    CMRotationMatrix calculatedRotationMatrix = rotationMatrixForQuaternion(q);
-    NSLog(@"calculated rotation matrix:\n%@", stringifiedRotationMatrix(calculatedRotationMatrix));
-    CMRotationMatrix differenceMatrix = subtractRotationMatrices(adjustedAttitude.rotationMatrix, calculatedRotationMatrix);
-    NSLog(@"difference matrix:\n%@", stringifiedRotationMatrix(differenceMatrix));
-    NSLog(@"quaternion: %@", formattedQuaternion(q));
-    CMQuaternion calculatedQuaternion = quaternionFromRotationMatrix(calculatedRotationMatrix);
-    NSLog(@"calculated quaternion: %@", formattedQuaternion(calculatedQuaternion));
-    CMQuaternion quatDiff = subtractQuaternions(q, calculatedQuaternion);
-    NSLog(@"quat diff: %@", formattedQuaternion(quatDiff));
-
-    NSLog(@"magnitude (atti): %@", @(magnitudeOfAttitude(adjustedAttitude)));
-    NSLog(@"magnitude (quat): %@", @(magnitudeOfQuaternion(q)));
-
-    CMRotationMatrix matrix = adjustedAttitude.rotationMatrix;
-    NSLog(@"matrix:\n%@", stringifiedRotationMatrix(matrix));
-    CMRotationMatrix inverse = inverseOfRotationMatrix(matrix);
-    NSLog(@"inverse:\n%@", stringifiedRotationMatrix(inverse));
-    CMRotationMatrix inverseCancel = multiplyRotationMatrices(matrix, inverse);
-    NSLog(@"cancel:\n%@", stringifiedRotationMatrix(inverseCancel));
-
-    CMRotationMatrix doubleInverse = inverseOfRotationMatrix(inverse);
-    NSLog(@"double inverse:\n%@", stringifiedRotationMatrix(doubleInverse));
-    CMRotationMatrix differenceFromInverses = subtractRotationMatrices(matrix, doubleInverse);
-    NSLog(@"difference:\n%@", stringifiedRotationMatrix(differenceFromInverses));
-
-    CMRotationMatrix blah;
-    blah.m11 = 2; blah.m22 = 2; blah.m33 = 2;
-    CMRotationMatrix product = multiplyRotationMatrices(matrix, blah);
-    NSLog(@"new product:\n%@", stringifiedRotationMatrix(product));
-
-#endif
-
-    _endButton.alpha = .1;
-    _endButton.userInteractionEnabled = NO;
-
-    if (![_endLabel superview]) {
-        // Place label where start currently is. Why? Why not?
-        CGRect referenceFrame = _referenceLabel.frame;
-        _endLabel = [[UILabel alloc] initWithFrame:referenceFrame];
-        _endLabel.font = fixedFont();
-
-        // Move start label up.
-        referenceFrame.origin.y -= CGRectGetHeight(referenceFrame);
-        [UIView animateWithDuration:.2 animations:^{
-            _referenceLabel.frame = referenceFrame;
-            [self.view addSubview:_endLabel];
-        }];
-    }
-
-    _endLabel.text = [NSString stringWithFormat:@"{%@}", formattedAttitude(endAttitude)];
-    _endLabel.alpha = 1;
-}
-#endif
-
 
 #pragma mark Math
 

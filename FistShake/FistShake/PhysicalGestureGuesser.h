@@ -17,12 +17,7 @@ typedef NS_ENUM(NSInteger, PhysicalGestureEnum) {
     HighFive,
     Hug,
     HugSlap,
-    // Keep future additions in kPhysicalGestureEnumStrings.
-    // Hack, hack, hack...
 };
-#define kPhysicalGestureEnumStrings @"Unknown", @"Handshake", @"FistBump", @"Hug", @"HugSlap", @"HighFive", nil
-
-
 
 @interface PhysicalGestureGuesser : NSObject
 
@@ -39,5 +34,3 @@ typedef NS_ENUM(NSInteger, PhysicalGestureEnum) {
 + (NSString *)stringForGestureEnum:(PhysicalGestureEnum)gestureEnum;
 
 @end
-
-

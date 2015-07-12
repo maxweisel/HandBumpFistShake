@@ -52,6 +52,7 @@
     double rollDelta = 10000;
 
 
+    // Should be utility method/function.
     double pitch = attitude.pitch;
     if (_minPitch < pitch && pitch < _maxPitch) {
         pitchDelta = 0;
