@@ -7,12 +7,13 @@
 //
 
 #import "PhysicalGestureGuesser.h"
+#import "PhysicalInteraction.h"
 #import <CoreMotion/CoreMotion.h>
 
 
 @interface PhysicalGesture : NSObject
 
-- (instancetype)initWithType:(Interaction)Interaction
+- (instancetype)initWithType:(InteractionType)interactionType
                     minPitch:(double)minPitch
                     maxPitch:(double)maxPitch
                      minRoll:(double)minRoll
@@ -21,7 +22,7 @@
 // How confident are we that the attitude describes this gesture?
 - (double)distance:(CMAttitude *)attitude;
 
-@property(nonatomic, readonly) Interaction Interaction;
+@property(nonatomic, readonly) InteractionType interactionType;
 @property(nonatomic) double minPitch;
 @property(nonatomic) double maxPitch;
 @property(nonatomic) double minRoll;
@@ -31,14 +32,14 @@
 
 @implementation PhysicalGesture
 
-- (instancetype)initWithType:(Interaction)Interaction
+- (instancetype)initWithType:(InteractionType)interactionType
                     minPitch:(double)minPitch
                     maxPitch:(double)maxPitch
                      minRoll:(double)minRoll
                      maxRoll:(double)maxRoll {
     self = [super init];
     if (self) {
-        _Interaction = Interaction;
+        _interactionType = interactionType;
         _minPitch = minPitch;
         _maxPitch = maxPitch;
         _minRoll = minRoll;
@@ -106,16 +107,15 @@
     return [self initWithThreshold:.2];
 }
 
-- (Interaction)bestGuessFromAttitude:(CMAttitude *)attitude {
-
-    Interaction whichGesture = None;
+- (InteractionType)bestGuessFromAttitude:(CMAttitude *)attitude {
+    InteractionType whichGesture = None;
     double minDistance = 1000000000;
 
     for (PhysicalGesture *physicalGesture in _gestures) {
         double distance = [physicalGesture distance:attitude];
         if (distance < minDistance) {
             minDistance = distance;
-            whichGesture = physicalGesture.Interaction;
+            whichGesture = physicalGesture.interactionType;
         }
     }
 
@@ -128,47 +128,5 @@
 
 }
 
-+ (NSString *)stringForInteraction:(Interaction)interaction {
-    switch (interaction) {
-        case None:
-            return @"None";
-        case Handshake:
-            return @"Handshake";
-        case FistBump:
-            return @"Fist Bump";
-        case HighFive:
-            return @"High Five";
-        case BroHug:
-            return @"Bro Hug";
-        case Hug:
-            return @"Hug";
-        default:
-            break;
-    }
-    return @"<Interaction Not Found>";
-}
-
-+ (Interaction)interactionForString:(NSString *)str {
-    if ([str isEqualToString:@"None"]) {
-        return None;
-    }
-    if ([str isEqualToString:@"Handshake"]) {
-        return Handshake;
-    }
-    if ([str isEqualToString:@"Fist Bump"]) {
-        return FistBump;
-    }
-    if ([str isEqualToString:@"HighFive"]) {
-        return HighFive;
-    }
-    if ([str isEqualToString:@"BroHug"]) {
-        return BroHug;
-    }
-    if ([str isEqualToString:@"Hug"]) {
-        return Hug;
-    }
-
-    return None;
-}
 
 @end

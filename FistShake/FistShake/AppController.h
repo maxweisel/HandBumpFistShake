@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "PhysicalGestureGuesser.h" // gross
+#import "PhysicalInteraction.h"
 
 @protocol AppControllerDelegate <NSObject>
-- (void)useNewGesture:(Interaction)gesture;
+- (void)useNewGesture:(InteractionType)gesture;
 @end
 
 @interface AppController : NSObject

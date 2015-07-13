@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		99B0CF101B526B5A00C3786F /* PhysicalGestureGuesser.m in Sources */ = {isa = PBXBuildFile; fileRef = 99B0CF0F1B526B5A00C3786F /* PhysicalGestureGuesser.m */; };
+		99EA20B71B533DFC006D45FF /* PhysicalInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 99EA20B61B533DFC006D45FF /* PhysicalInteraction.m */; };
 		E90A65FF1B51C6F7003B45C1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E90A65FE1B51C6F7003B45C1 /* main.m */; };
 		E90A66021B51C6F7003B45C1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E90A66011B51C6F7003B45C1 /* AppDelegate.m */; };
 		E90A660C1B51C6F8003B45C1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E90A660B1B51C6F8003B45C1 /* Images.xcassets */; };
@@ -28,8 +29,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		99B0CF0E1B526B5A00C3786F /* PhysicalGestureGuesser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhysicalGestureGuesser.h; sourceTree = "<group>"; };
 		99B0CF0F1B526B5A00C3786F /* PhysicalGestureGuesser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhysicalGestureGuesser.m; sourceTree = "<group>"; };
+		99EA20B51B533DFC006D45FF /* PhysicalInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhysicalInteraction.h; path = ../Shared/PhysicalInteraction.h; sourceTree = "<group>"; };
+		99EA20B61B533DFC006D45FF /* PhysicalInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhysicalInteraction.m; path = ../Shared/PhysicalInteraction.m; sourceTree = "<group>"; };
+		99EA20B81B533E10006D45FF /* PhysicalGestureGuesser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhysicalGestureGuesser.h; sourceTree = "<group>"; };
 		E90A65F91B51C6F7003B45C1 /* FistShake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FistShake.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E90A65FD1B51C6F7003B45C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E90A65FE1B51C6F7003B45C1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -44,8 +47,6 @@
 		E90A665C1B51C7D0003B45C1 /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		E90A665E1B51E01E003B45C1 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		E90A665F1B51E01E003B45C1 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
-		E90A66BC1B52DECF003B45C1 /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
-		E90A66BD1B52DECF003B45C1 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,9 +67,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		99EA20B11B5332ED006D45FF /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				99EA20B51B533DFC006D45FF /* PhysicalInteraction.h */,
+				99EA20B61B533DFC006D45FF /* PhysicalInteraction.m */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
 		E90A65F01B51C6F7003B45C1 = {
 			isa = PBXGroup;
 			children = (
+				99EA20B11B5332ED006D45FF /* Shared */,
 				E90A65FB1B51C6F7003B45C1 /* FistShake */,
 				E90A66171B51C6F8003B45C1 /* FistShakeTests */,
 				E90A65FA1B51C6F7003B45C1 /* Products */,
@@ -93,10 +104,8 @@
 				E90A665C1B51C7D0003B45C1 /* AppController.m */,
 				E90A665E1B51E01E003B45C1 /* MainViewController.h */,
 				E90A665F1B51E01E003B45C1 /* MainViewController.m */,
-				99B0CF0E1B526B5A00C3786F /* PhysicalGestureGuesser.h */,
+				99EA20B81B533E10006D45FF /* PhysicalGestureGuesser.h */,
 				99B0CF0F1B526B5A00C3786F /* PhysicalGestureGuesser.m */,
-				E90A66BC1B52DECF003B45C1 /* TestViewController.h */,
-				E90A66BD1B52DECF003B45C1 /* TestViewController.m */,
 				E90A660B1B51C6F8003B45C1 /* Images.xcassets */,
 				E90A660D1B51C6F8003B45C1 /* LaunchScreen.xib */,
 				E90A65FC1B51C6F7003B45C1 /* Supporting Files */,
@@ -234,6 +243,7 @@
 				E90A665D1B51C7D0003B45C1 /* AppController.m in Sources */,
 				E90A65FF1B51C6F7003B45C1 /* main.m in Sources */,
 				E90A66601B51E01E003B45C1 /* MainViewController.m in Sources */,
+				99EA20B71B533DFC006D45FF /* PhysicalInteraction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,15 +7,15 @@
 //
 
 #import "AppController.h"
-#import <GameKit/GameKit.h>
 #import "PhysicalGestureGuesser.h"
 
-// This is here to get clang to stfu about GKSession being deprecated.
+#import <GameKit/GameKit.h>
+
+// This is here to get clang to STFU about GKSession being deprecated.
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 @interface AppController () <GKSessionDelegate>
-
 @end
 
 @implementation AppController {
@@ -91,8 +91,8 @@ __weak static AppController *__currentInstance = nil;
 
 - (void)receivedValue:(id)value forKey:(NSString *)key {
     if ([@"interaction" isEqualToString:key]) {
-        Interaction interaction = [PhysicalGestureGuesser interactionForString:value];
-        [_delegate useNewGesture:interaction];
+        InteractionType interactionType = [PhysicalInteraction interactionForString:value];
+        [_delegate useNewGesture:interactionType];
     }
 }
 

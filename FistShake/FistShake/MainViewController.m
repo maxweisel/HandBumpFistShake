@@ -8,6 +8,7 @@
 
 #import "MainViewController.h"
 #import "PhysicalGestureGuesser.h"
+#import "PhysicalInteraction.h"
 #import "AppController.h"
 
 #import <AudioToolbox/AudioToolbox.h>
@@ -22,20 +23,25 @@
 
     AppController *_controller;
 
-
-    Interaction _targetGesture;
-    Interaction _currentGuess;
+    InteractionType _targetGesture;
+    InteractionType _currentGuess;
     UILabel *_gestureGuessLabel;
     UILabel *_targetGestureLabel;
 
     NSTimer *_sendCurrentGestureTimer;
 
-    UILabel *_gravityLabel;
-    UILabel *_attitudeLabel;
-
     CMAttitude *_referenceAttitude;
     UILabel *_referenceLabel;
     UILabel *_endLabel;
+
+    int _gesturesFired[Last];
+
+    UITapGestureRecognizer *_tapGesture;
+
+    UILabel *_gravityLabel;
+    UILabel *_attitudeLabel;
+
+    NSArray *_debugLabels;
 }
 
 #pragma mark UIViewController Crap
@@ -49,12 +55,24 @@
 
         _controller = [AppController currentInstance];
         _controller.delegate = self;
+
+        [self resetGestureData];
     }
     return self;
 }
 
+- (NSArray *)debugLabels {
+    if (!_debugLabels) {
+        _debugLabels = @[_referenceLabel, _attitudeLabel, _gravityLabel];
+    }
+    return _debugLabels;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    _tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
+    [self.view addGestureRecognizer:_tapGesture];
 
     CGRect bounds = self.view.bounds;
 
@@ -75,21 +93,17 @@
 
     CGFloat guessLabelY = CGRectGetMaxY(_attitudeLabel.frame) + 10;
     _gestureGuessLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, guessLabelY, CGRectGetWidth(bounds), 100)];
-    _gestureGuessLabel.text = [PhysicalGestureGuesser stringForInteraction:_currentGuess];
-    _gestureGuessLabel.font = [UIFont italicSystemFontOfSize:36];
+    _gestureGuessLabel.text = [PhysicalInteraction stringForInteractionType:_currentGuess];
+    _gestureGuessLabel.font = [UIFont italicSystemFontOfSize:24];
+    _gestureGuessLabel.alpha = .6;
     _gestureGuessLabel.textColor = [UIColor blackColor];
     _gestureGuessLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:_gestureGuessLabel];
-
     CALayer *layer =  _gestureGuessLabel.layer;
     layer.borderColor = [UIColor blueColor].CGColor;
     layer.borderWidth = 2;
 
     [self setupTargetGestureLabel];
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.view bringSubviewToFront:_gestureGuessLabel];
-    });
 
     // Finally! Motion!
     _motionManager = [[CMMotionManager alloc] init];
@@ -98,14 +112,7 @@
                                                         toQueue:[NSOperationQueue mainQueue]
                                                     withHandler:^(CMDeviceMotion *motion, NSError *error) {
                                                         if (error) {
-                                                            NSString *errorString = [NSString stringWithFormat:@"wtf: %@", error];
-                                                            UILabel *label = [[UILabel alloc] init];
-                                                            [self.view addSubview:label];
-                                                            label.text = errorString;
-                                                            [label sizeToFit];
-                                                            // This is almost guaranteed to look shitty. It's never been tested; we've never had errors.
-                                                            label.center = [self.view convertPoint:self.view.center fromView:nil];
-                                                            NSLog(@"%@", errorString);
+                                                            [self handleMotionError:&error];
                                                             return;
                                                         }
 
@@ -116,9 +123,47 @@
     _sendCurrentGestureTimer = [NSTimer scheduledTimerWithTimeInterval:.1 target:self selector:@selector(sendGestureData) userInfo:nil repeats:YES];
 }
 
+- (void)handleMotionError:(NSError **)error {
+    NSString *errorString = [NSString stringWithFormat:@"wtf: %@", *error];
+    UILabel *label = [[UILabel alloc] init];
+    [self.view addSubview:label];
+    label.text = errorString;
+    [label sizeToFit];
+    // This is almost guaranteed to look shitty. It's never been tested; we've never had errors.
+    label.center = [self.view convertPoint:self.view.center fromView:nil];
+    NSLog(@"%@", errorString);
+}
+
+- (void)tapGesture:(UIGestureRecognizer *)tapGesture {
+    // This is sure to bite us in the ass some day.
+    for (UIView *view in [self debugLabels]) {
+        [UIView animateWithDuration:.3 animations:^{
+            view.alpha = fabs(1 - view.alpha);
+        }];
+    }
+}
+
+- (void)resetGestureData {
+    for (int i = 0; i < Last /* InteractionType */; i++) {
+        _gesturesFired[i] = 0;
+    }
+}
+
 - (void)sendGestureData {
-//    NSLog(@"sending gesture: %@", [PhysicalGestureGuesser stringForInteraction:_currentGuess]);
-    [_controller sendValue:@(_currentGuess) forKey:@"CurrentGesture"];
+    int maxCount = 0;
+    InteractionType highGesture = None;
+    for (int i = 0; i < 6; i++) {
+        if (_gesturesFired[i] > maxCount) {
+            maxCount = _gesturesFired[i];
+            highGesture = i;
+        }
+    }
+
+    NSLog(@"sending gesture: %@", [PhysicalInteraction stringForInteractionType:highGesture]);
+    [_controller sendValue:@(highGesture) forKey:@"CurrentGesture"];
+
+    // Clear bucket for the next round.
+    [self resetGestureData];
 }
 
 #pragma mark Bleh
@@ -134,7 +179,7 @@
 
 #pragma mark AppControllerDelegate
 
-- (void)useNewGesture:(Interaction)gesture {
+- (void)useNewGesture:(InteractionType)gesture {
     _targetGesture = gesture;
     [self updateTargetGestureUi];
 }
@@ -155,14 +200,16 @@
 
 - (void)updateGuessLabel {
     CMAttitude *currentAttitude = _motionManager.deviceMotion.attitude;
-    Interaction interaction = [_gestureGuesser bestGuessFromAttitude:currentAttitude];
+    InteractionType interactionType = [_gestureGuesser bestGuessFromAttitude:currentAttitude];
 
-    if (interaction != _currentGuess) {
-        NSString *gestureString = [PhysicalGestureGuesser stringForInteraction:interaction];
+    if (interactionType != _currentGuess) {
+        NSString *gestureString = [PhysicalInteraction stringForInteractionType:interactionType];
         _gestureGuessLabel.text = gestureString;
-//        NSLog(@"%@", gestureString);
-        _currentGuess = interaction;
+        NSLog(@"new guess: %@", gestureString);
+        _currentGuess = interactionType;
     }
+
+    _gesturesFired[interactionType] += 1;
 }
 
 - (void)setupReferenceLabel {
@@ -180,16 +227,16 @@
     _targetGestureLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:_targetGestureLabel];
     _targetGestureLabel.backgroundColor = [UIColor redColor];
-    _targetGestureLabel.font = [UIFont boldSystemFontOfSize:48];
+    _targetGestureLabel.font = [UIFont boldSystemFontOfSize:64];
 
-    NSString *targetString = [PhysicalGestureGuesser stringForInteraction:_targetGesture];
+    NSString *targetString = [PhysicalInteraction stringForInteractionType:_targetGesture];
     NSLog(@"first target: %@", targetString);
     _targetGestureLabel.text = targetString;
 }
 
 - (void)updateTargetGestureUi {
     // Update label.
-    NSString *text = [PhysicalGestureGuesser stringForInteraction:_targetGesture];
+    NSString *text = [PhysicalInteraction stringForInteractionType:_targetGesture];
     _targetGestureLabel.text = text;
     NSLog(@"new target from server: %@", text);
 
@@ -227,7 +274,6 @@ NSString* stringifiedRotationMatrix(CMRotationMatrix matrix) {
 
 // Stolen from http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/ and modified.
 CMRotationMatrix rotationMatrixForQuaternion(CMQuaternion q) {
-
     double xx = q.x * q.x;
     double xy = q.x * q.y;
     double xz = q.x * q.z;
