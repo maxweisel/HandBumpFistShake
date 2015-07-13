@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-
 typedef NS_ENUM(NSInteger, InteractionType) {
     None = 0,
     Handshake = 1,

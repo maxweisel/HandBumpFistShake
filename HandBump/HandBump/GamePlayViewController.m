@@ -9,6 +9,7 @@
 #import "GamePlayViewController.h"
 #import "CutSceneViewController.h"
 #import "AppController.h"
+#import "PhysicalInteraction.h"
 #import "VideoPlayer.h"
 
 typedef enum {
@@ -18,15 +19,6 @@ typedef enum {
     GSTeam1Wins,
     GSTeam2Wins,
 } GameState;
-
-typedef enum {
-    None = 0,
-    Handshake = 1,
-    FistBump = 2,
-    HighFive = 3,
-    BroHug = 4,
-    Hug = 5,
-} Interaction;
 
 #define FLASH_TIME 0.5f
 
@@ -44,12 +36,12 @@ typedef enum {
     UILabel *_team2Score;
     int _team2Points;
     
-    Interaction _targetInteraction;
+    InteractionType _targetInteraction;
     NSString *_device1Peer;
-    Interaction _device1Interaction;
+    InteractionType _device1Interaction;
     
     NSString *_device2Peer;
-    Interaction _device2Interaction;
+    InteractionType _device2Interaction;
     
     int _numberOfCorrectGestureFrames;
     
@@ -162,16 +154,16 @@ typedef enum {
 }
 
 - (void)sendNewGesture {
-    Interaction interaction = rand() % 5 + 1;
-    if (interaction == _targetInteraction) {
+    InteractionType interactionType = rand() % Last /* InteractionType */ + 1;
+    if (interactionType == _targetInteraction) {
         [self sendNewGesture];
         return;
     }
-    _targetInteraction = interaction;
-    [self displayInteraction:interaction];
+    _targetInteraction = interactionType;
+    [self displayInteraction:interactionType];
     
     AppController *controller = [AppController currentInstance];
-    [controller sendInteraction:[self interactionNameForInteraction:interaction]];
+    [controller sendInteraction:[PhysicalInteraction stringForInteractionType:interactionType]];
 }
 
 - (void)receivedInteraction:(NSNumber *)interaction fromDevice:(NSString *)device {
@@ -370,7 +362,7 @@ typedef enum {
     flashView.hidden = !flashView.hidden;
 }
 
-- (void)displayInteraction:(Interaction)interaction {
+- (void)displayInteraction:(InteractionType)interactionType {
     [_interactionView removeFromSuperview];
     _interactionView = nil;
     [_interactionFlashTimer invalidate];
@@ -379,7 +371,7 @@ typedef enum {
     CGRect viewBounds = self.view.bounds;
     CGPoint center = CGPointMake(CGRectGetMidX(viewBounds), CGRectGetMidY(viewBounds));
     
-    switch (interaction) {
+    switch (interactionType) {
         case Handshake:
             _interactionView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Handshake.png"]];
             break;
@@ -413,26 +405,6 @@ typedef enum {
 
 - (void)flashInteraction:(NSTimer *)timer {
     _interactionView.hidden = !_interactionView.hidden;
-}
-
-- (NSString *)interactionNameForInteraction:(Interaction)interaction {
-    switch (interaction) {
-        case None:
-            return @"None";
-        case Handshake:
-            return @"Handshake";
-        case FistBump:
-            return @"Fist Bump";
-        case HighFive:
-            return @"High Five";
-        case BroHug:
-            return @"Bro Hug";
-        case Hug:
-            return @"Hug";
-        default:
-            break;
-    }
-    return @"<Interaction Not Found>";
 }
 
 - (void)updateScoreUI {

@@ -25,6 +25,8 @@
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.rootViewController = [[StartScreenViewController alloc] init];
     [self.window makeKeyAndVisible];
+
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
         
     return YES;
 }

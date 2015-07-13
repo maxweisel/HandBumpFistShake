@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		99EA20BF1B5340FB006D45FF /* PhysicalInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 99EA20BE1B5340FB006D45FF /* PhysicalInteraction.m */; };
 		E90A66331B51C77E003B45C1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E90A66321B51C77E003B45C1 /* main.m */; };
 		E90A66361B51C77E003B45C1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E90A66351B51C77E003B45C1 /* AppDelegate.m */; };
 		E90A66401B51C77E003B45C1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E90A663F1B51C77E003B45C1 /* Images.xcassets */; };
@@ -47,6 +48,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		99EA20BD1B5340FB006D45FF /* PhysicalInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhysicalInteraction.h; sourceTree = "<group>"; };
+		99EA20BE1B5340FB006D45FF /* PhysicalInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhysicalInteraction.m; sourceTree = "<group>"; };
 		E90A662D1B51C77E003B45C1 /* HandBump.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HandBump.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E90A66311B51C77E003B45C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E90A66321B51C77E003B45C1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -104,10 +107,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		99EA20BC1B5340FB006D45FF /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				99EA20BD1B5340FB006D45FF /* PhysicalInteraction.h */,
+				99EA20BE1B5340FB006D45FF /* PhysicalInteraction.m */,
+			);
+			name = Shared;
+			path = ../Shared;
+			sourceTree = "<group>";
+		};
 		E90A66241B51C77E003B45C1 = {
 			isa = PBXGroup;
 			children = (
 				E90A662F1B51C77E003B45C1 /* HandBump */,
+				99EA20BC1B5340FB006D45FF /* Shared */,
 				E90A664B1B51C77E003B45C1 /* HandBumpTests */,
 				E90A662E1B51C77E003B45C1 /* Products */,
 			);
@@ -309,6 +323,7 @@
 				E90A665A1B51C7C7003B45C1 /* AppController.m in Sources */,
 				E90A66A11B520282003B45C1 /* GamePlayViewController.m in Sources */,
 				E90A66331B51C77E003B45C1 /* main.m in Sources */,
+				99EA20BF1B5340FB006D45FF /* PhysicalInteraction.m in Sources */,
 				E90A669C1B51FFAA003B45C1 /* CutSceneViewController.m in Sources */,
 				E90A66971B51FC3A003B45C1 /* StartScreenViewController.m in Sources */,
 			);
