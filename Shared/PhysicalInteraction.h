@@ -13,8 +13,8 @@ typedef NS_ENUM(NSInteger, InteractionType) {
     Handshake = 1,
     FistBump = 2,
     HighFive = 3,
-    BroHug = 4,
-    Hug = 5,
+    Hug = 4,
+    HugSlap = 5,
     Last,
 };
 

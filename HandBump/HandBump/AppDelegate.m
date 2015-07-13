@@ -11,7 +11,6 @@
 #import "StartScreenViewController.h"
 
 @interface AppDelegate ()
-
 @end
 
 @implementation AppDelegate {

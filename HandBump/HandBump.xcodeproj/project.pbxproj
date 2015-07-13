@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		99EA20BF1B5340FB006D45FF /* PhysicalInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 99EA20BE1B5340FB006D45FF /* PhysicalInteraction.m */; };
+		99EA20C31B53498B006D45FF /* HugSlap@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 99EA20C21B53498B006D45FF /* HugSlap@2x.png */; };
 		E90A66331B51C77E003B45C1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E90A66321B51C77E003B45C1 /* main.m */; };
 		E90A66361B51C77E003B45C1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E90A66351B51C77E003B45C1 /* AppDelegate.m */; };
 		E90A66401B51C77E003B45C1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E90A663F1B51C77E003B45C1 /* Images.xcassets */; };
@@ -22,7 +23,6 @@
 		E90A66A31B523B82003B45C1 /* MainScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E90A66A21B523B82003B45C1 /* MainScreen@2x.png */; };
 		E90A66A61B523D88003B45C1 /* Winner@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E90A66A41B523D88003B45C1 /* Winner@2x.png */; };
 		E90A66A71B523D88003B45C1 /* YouUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E90A66A51B523D88003B45C1 /* YouUp@2x.png */; };
-		E90A66AD1B524406003B45C1 /* BroHug@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E90A66A81B524406003B45C1 /* BroHug@2x.png */; };
 		E90A66AE1B524406003B45C1 /* FistBump@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E90A66A91B524406003B45C1 /* FistBump@2x.png */; };
 		E90A66AF1B524406003B45C1 /* Handshake@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E90A66AA1B524406003B45C1 /* Handshake@2x.png */; };
 		E90A66B01B524406003B45C1 /* HighFive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E90A66AB1B524406003B45C1 /* HighFive@2x.png */; };
@@ -50,6 +50,7 @@
 /* Begin PBXFileReference section */
 		99EA20BD1B5340FB006D45FF /* PhysicalInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhysicalInteraction.h; sourceTree = "<group>"; };
 		99EA20BE1B5340FB006D45FF /* PhysicalInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhysicalInteraction.m; sourceTree = "<group>"; };
+		99EA20C21B53498B006D45FF /* HugSlap@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HugSlap@2x.png"; sourceTree = "<group>"; };
 		E90A662D1B51C77E003B45C1 /* HandBump.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HandBump.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E90A66311B51C77E003B45C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E90A66321B51C77E003B45C1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -73,7 +74,6 @@
 		E90A66A21B523B82003B45C1 /* MainScreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MainScreen@2x.png"; sourceTree = "<group>"; };
 		E90A66A41B523D88003B45C1 /* Winner@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Winner@2x.png"; sourceTree = "<group>"; };
 		E90A66A51B523D88003B45C1 /* YouUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YouUp@2x.png"; sourceTree = "<group>"; };
-		E90A66A81B524406003B45C1 /* BroHug@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BroHug@2x.png"; sourceTree = "<group>"; };
 		E90A66A91B524406003B45C1 /* FistBump@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FistBump@2x.png"; sourceTree = "<group>"; };
 		E90A66AA1B524406003B45C1 /* Handshake@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Handshake@2x.png"; sourceTree = "<group>"; };
 		E90A66AB1B524406003B45C1 /* HighFive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HighFive@2x.png"; sourceTree = "<group>"; };
@@ -170,11 +170,11 @@
 				E90A66B21B525069003B45C1 /* 04B_03__.ttf */,
 				E90A66A41B523D88003B45C1 /* Winner@2x.png */,
 				E90A66A51B523D88003B45C1 /* YouUp@2x.png */,
-				E90A66A81B524406003B45C1 /* BroHug@2x.png */,
 				E90A66A91B524406003B45C1 /* FistBump@2x.png */,
 				E90A66AA1B524406003B45C1 /* Handshake@2x.png */,
 				E90A66AB1B524406003B45C1 /* HighFive@2x.png */,
 				E90A66AC1B524406003B45C1 /* Hug@2x.png */,
+				99EA20C21B53498B006D45FF /* HugSlap@2x.png */,
 				E90A66A21B523B82003B45C1 /* MainScreen@2x.png */,
 				E90A669D1B52022C003B45C1 /* movie1.mov */,
 				E90A66981B51FCD1003B45C1 /* TitleScreen.png */,
@@ -287,7 +287,6 @@
 				E90A66431B51C77E003B45C1 /* LaunchScreen.xib in Resources */,
 				E90A66BB1B52DCE0003B45C1 /* intro.mp4 in Resources */,
 				E90A66B51B5254AF003B45C1 /* Go@2x.png in Resources */,
-				E90A66AD1B524406003B45C1 /* BroHug@2x.png in Resources */,
 				E9F9197B1B52EA0B006D2C68 /* SAXGUY.mp4 in Resources */,
 				E90A66A31B523B82003B45C1 /* MainScreen@2x.png in Resources */,
 				E90A66B31B525069003B45C1 /* 04B_03__.ttf in Resources */,
@@ -296,6 +295,7 @@
 				E90A66B91B52C981003B45C1 /* Cutscene2.mp4 in Resources */,
 				E90A66A61B523D88003B45C1 /* Winner@2x.png in Resources */,
 				E90A66AF1B524406003B45C1 /* Handshake@2x.png in Resources */,
+				99EA20C31B53498B006D45FF /* HugSlap@2x.png in Resources */,
 				E90A66401B51C77E003B45C1 /* Images.xcassets in Resources */,
 				E90A669E1B52022C003B45C1 /* movie1.mov in Resources */,
 				E90A66A71B523D88003B45C1 /* YouUp@2x.png in Resources */,

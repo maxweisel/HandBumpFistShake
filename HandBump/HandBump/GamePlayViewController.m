@@ -407,11 +407,11 @@ typedef enum {
         case HighFive:
             _interactionView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"HighFive.png"]];
             break;
-        case BroHug:
-            _interactionView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BroHug.png"]];
-            break;
         case Hug:
             _interactionView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Hug.png"]];
+            break;
+        case HugSlap:
+            _interactionView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"HugSlap.png"]];
             break;
         default:
             break;

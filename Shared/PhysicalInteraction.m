@@ -20,10 +20,10 @@
             return @"Fist Bump";
         case HighFive:
             return @"High Five";
-        case BroHug:
-            return @"Bro Hug";
         case Hug:
             return @"Hug";
+        case HugSlap:
+            return @"Hug Slap";
         default:
             break;
     }
@@ -40,14 +40,14 @@
     if ([str isEqualToString:@"Fist Bump"]) {
         return FistBump;
     }
-    if ([str isEqualToString:@"HighFive"]) {
+    if ([str isEqualToString:@"High Five"]) {
         return HighFive;
-    }
-    if ([str isEqualToString:@"BroHug"]) {
-        return BroHug;
     }
     if ([str isEqualToString:@"Hug"]) {
         return Hug;
+    }
+    if ([str isEqualToString:@"Hug Slap"]) {
+        return HugSlap;
     }
 
     return None;
