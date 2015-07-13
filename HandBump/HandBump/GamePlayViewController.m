@@ -48,6 +48,10 @@ typedef enum {
     VideoPlayer *_videoPlayer;
     
     SystemSoundID dingSoung;
+    
+    SEL _nextSelector;
+    
+    BOOL _blockButton;
 }
 
 - (instancetype)init {
@@ -89,18 +93,18 @@ typedef enum {
     _teamWims.hidden = YES;
     [self.view addSubview:_teamWims];
     
-    _team1Score = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 400.0f, 200.0f)];
-    _team1Score.center = CGPointMake(248.0f, 450.0f);
+    _team1Score = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 400.0f, 250.0f)];
+    _team1Score.center = CGPointMake(248.0f, 500.0f);
     _team1Score.text = @"0";
-    _team1Score.font = [UIFont fontWithName:@"04b03" size:78.0f];
+    _team1Score.font = [UIFont fontWithName:@"04b03" size:200.0f];
     _team1Score.textAlignment = NSTextAlignmentCenter;
     _team1Score.textColor = [UIColor whiteColor];
     [self.view addSubview:_team1Score];
     
-    _team2Score = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 400.0f, 200.0f)];
-    _team2Score.center = CGPointMake(self.view.bounds.size.width - 248.0f, 450.0f);
+    _team2Score = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 400.0f, 250.0f)];
+    _team2Score.center = CGPointMake(self.view.bounds.size.width - 248.0f, 500.0f);
     _team2Score.text = @"0";
-    _team2Score.font = [UIFont fontWithName:@"04b03" size:78.0f];
+    _team2Score.font = [UIFont fontWithName:@"04b03" size:200.0f];
     _team2Score.textAlignment = NSTextAlignmentCenter;
     _team2Score.textColor = [UIColor whiteColor];
     [self.view addSubview:_team2Score];
@@ -150,7 +154,17 @@ typedef enum {
     [self sendNewGesture];
     
     // Start timer
-    [self performSelector:@selector(endRound1) withObject:nil afterDelay:10.0f];
+    [self performSelector:@selector(blockButton) withObject:nil afterDelay:4.0f];
+    [self performSelector:@selector(endRound1) withObject:nil afterDelay:5.0f];
+}
+
+- (void)blockButton {
+    _blockButton = YES;
+    [self performSelector:@selector(unblockButton) withObject:nil afterDelay:1.0f];
+}
+
+- (void)unblockButton {
+    _blockButton = NO;
 }
 
 - (void)sendNewGesture {
@@ -200,19 +214,31 @@ typedef enum {
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (_blockButton)
+        return;
+    
     CGPoint point = [[touches anyObject] locationInView:self.view];
     if (point.x > 900.0f && point.y > 600.0f) {
-        // Award point
-        if (_state == GSTeam1Playing) {
-            _team1Points++;
-            [self ding];
-        } else if (_state == GSTeam2Playing) {
-            _team2Points++;
-            [self ding];
+        if (_state == GSStart) {
+            [self startTeam1];
+        } else {
+            if (_targetInteraction == None) {
+                // Lame hack to see if we've started round two yet or not.
+                [self startTeam2];
+            } else {
+                // Award point
+                if (_state == GSTeam1Playing) {
+                    _team1Points++;
+                    [self ding];
+                } else if (_state == GSTeam2Playing) {
+                    _team2Points++;
+                    [self ding];
+                }
+                [self updateScoreUI];
+                
+                [self sendNewGesture];
+            }
         }
-        [self updateScoreUI];
-        
-        [self sendNewGesture];
     }
 }
 
@@ -232,7 +258,7 @@ typedef enum {
     [_videoPlayer stop];
     [_videoPlayer removeFromSuperview];
     
-    [self performSelector:@selector(startTeam2) withObject:nil afterDelay:2.0f];
+    //[self performSelector:@selector(startTeam2) withObject:nil afterDelay:2.0f];
 }
 
 - (void)startTeam2 {
@@ -243,7 +269,7 @@ typedef enum {
     [self sendNewGesture];
     
     // Start timer
-    [self performSelector:@selector(endRound2) withObject:nil afterDelay:10.0f];
+    [self performSelector:@selector(endRound2) withObject:nil afterDelay:5.0f];
 }
 
 - (void)endRound2 {
@@ -260,7 +286,7 @@ typedef enum {
         [self updateGameUIForNewState];
     }
     
-    [self showCutScene1];
+    [self performSelector:@selector(showCutScene1) withObject:nil afterDelay:4.0f];
 }
 
 - (void)showCutScene1 {

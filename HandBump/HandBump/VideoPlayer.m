@@ -20,7 +20,7 @@
         
         _player = [AVPlayer playerWithURL:videoURL];
         
-        _player.volume = 0.5f;
+        _player.volume = 2.0f;
         
         CALayer *layer = self.layer;
         layer.backgroundColor = [UIColor blackColor].CGColor;
